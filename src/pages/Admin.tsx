@@ -13,7 +13,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styles from "./Admin.module.css";
 
-const CLIENT_FOLDER = "distribuidora_maipu";
+const CLIENT_FOLDER = "tienda_bebidas";
 const PAGE_SIZE = 5;
 
 interface Product {
@@ -69,13 +69,13 @@ const Admin: React.FC = () => {
   }, [search, filterCategory, products]);
 
   const fetchProducts = async () => {
-    const snap = await getDocs(collection(db, "products"));
+    const snap = await getDocs(collection(db, "productos_bebidas"));
     const list = snap.docs.map((doc) => ({ ...(doc.data() as Product), id: doc.id }));
     setProducts(list);
   };
 
   const fetchCategories = async () => {
-    const snap = await getDocs(collection(db, "config"));
+    const snap = await getDocs(collection(db, "config_bebidas"));
     const config = snap.docs[0]?.data();
     if (config?.categories) setCategories(config.categories);
   };
@@ -106,9 +106,9 @@ const Admin: React.FC = () => {
     }
     const productData = { ...form, image: imageUrl };
     if (editingId) {
-      await updateDoc(doc(db, "products", editingId), productData);
+      await updateDoc(doc(db, "productos_bebidas", editingId), productData);
     } else {
-      await addDoc(collection(db, "products"), productData);
+      await addDoc(collection(db, "productos_bebidas"), productData);
     }
     setForm({ name: "", description: "", price: 0, image: "", category: "" });
     setImageFile(null);
@@ -124,14 +124,14 @@ const Admin: React.FC = () => {
 
   const handleDelete = async (id: string) => {
     if (confirm("¿Eliminar producto?")) {
-      await deleteDoc(doc(db, "products", id));
+      await deleteDoc(doc(db, "productos_bebidas", id));
       fetchProducts();
     }
   };
 
   const handleAddCategory = async () => {
     if (!newCategory.trim()) return;
-    const configRef = doc(db, "config", "global");
+    const configRef = doc(db, "config_bebidas", "global");
     await updateDoc(configRef, {
       categories: arrayUnion(newCategory.trim()),
     });
@@ -269,4 +269,5 @@ const Admin: React.FC = () => {
 };
 
 export default Admin;
+
 
