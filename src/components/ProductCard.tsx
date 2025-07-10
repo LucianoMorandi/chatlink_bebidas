@@ -6,36 +6,22 @@ interface Props {
 }
 
 const ProductCard = ({ product }: Props) => {
-
-  const optimizedUrl = product.image.replace(
-    "/upload/",
-    "/upload/f_auto,q_auto,w_600/"
-  );
-
   const handleBuy = () => {
-    const message = encodeURIComponent(
-      `Hola Distribuidora Maipú, estoy interesado en este producto:\n\n` +
-      `🛍 Producto: ${product.name}\n💵 Precio: $${product.price}\n\n` +
-      `¿Podrías darme más información?`
-    );
-
-    window.open(`https://wa.me/5492613065967?text=${message}`, "_blank");
+    const message = `Hola, quiero pedir este producto:\n\n*${product.name}* - $${product.price}`;
+    window.open(`https://wa.me/5492616093134?text=${encodeURIComponent(message)}`, "_blank");
   };
 
   return (
     <div className={styles.card}>
-      <img
-        src={optimizedUrl}
-        alt={product.name}
-        loading="lazy"
-        className={styles.image}
-      />
-      <h3 className={styles.title}>{product.name}</h3>
-      <p className={styles.description}>{product.description}</p>
-      <strong className={styles.price}>${product.price}</strong>
-      <button onClick={handleBuy} className={styles.buyButton}>
-        Comprar por WhatsApp
-      </button>
+      <img src={product.image} alt={product.name} className={styles.image} />
+      <div className={styles.info}>
+        <h3 className={styles.name}>{product.name}</h3>
+        <p className={styles.description}>{product.description}</p>
+        <p className={styles.price}>${product.price}</p>
+        <button className={styles.buyButton} onClick={handleBuy}>
+          Comprar por WhatsApp
+        </button>
+      </div>
     </div>
   );
 };
